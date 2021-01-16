@@ -8,21 +8,29 @@ const PORT = 3000;
 const app = express();
 
 app.use(logger("dev"));
-
+app.use(express.static(path.join(__dirname, "public")));
 app.use(compression());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/budgetTracker", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/budgetTracker", {
   useNewUrlParser: true,
   useFindAndModify: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 // routes
 app.use(require("./routes/api.js"));
+
+connection.on("connected", () => {
+  console.log("Mongoose successfully connected!");
+});
+
+connection.on("error", (err) => {
+  console.log("Mongoose connection error: ", err);
+});
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
