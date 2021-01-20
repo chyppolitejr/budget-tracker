@@ -23,7 +23,7 @@ mongoose
     useFindAndModify: false,
   })
   .then((connect) => console.log("connected to mongodb"))
-  .catch((e) => console.log("could not connect ot mongodb", e));
+  .catch((e) => console.log("could not connect to mongodb error: ", e));
 
 // routes
 app.use(require("./routes/api.js"));
